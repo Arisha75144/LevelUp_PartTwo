@@ -49,9 +49,7 @@ String String::operator+(const String &str) {
     String Newstr;
     int thisLength = strlen(this->_str);
     int otherLength = strlen(str._str);
-
     Newstr._length = thisLength + otherLength;
-
     Newstr._str = new char[thisLength + otherLength + 1];
     int i=0;
     for (i; i < thisLength; i++)
@@ -67,9 +65,30 @@ String String::operator+(const String &str) {
     Newstr._str[thisLength + otherLength] = '\0';
     return Newstr;
 
+}
 
+void String::append(const char *str) {
+    _length+= strlen(str);
+    char * tmp= new char [_length+1];
+    strcpy(tmp,_str);
+    strcat(tmp,str);
+    delete[] _str;
+    _str = tmp;
+}
+void String::append(const String &str) {
+    _length += str._length;
+    char *tmp = new char[_length + 1];
+    strcpy(tmp, _str);
+    strcat(tmp, str._str);
+    delete[] _str;
+    _str = tmp;
 
 }
+const char*String::c_str(){
+    return _str;
+}
+
+
 
 
 

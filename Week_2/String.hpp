@@ -34,6 +34,7 @@ public:
 
     void append(const String &str);
 
+
     void append(const char *str);
 
 
@@ -45,6 +46,7 @@ public:
         os << str._str;
         return os;
     };
+    const char *c_str();
 
 
 
