@@ -38,7 +38,6 @@ public:
     void append(const char *str);
 
 
-
      String operator+(const String& str);
 
     friend std::ostream &operator<<(std::ostream &os, const String &str) {
