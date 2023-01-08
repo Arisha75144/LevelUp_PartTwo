@@ -5,87 +5,73 @@
 #include "String.hpp"
 
 
-String::String(){
-    _str= nullptr;
+String::String() {
+
+    str_ = nullptr;
+    length_ = 0;
 }
 
 String::String(const char *str) {
-    _length= strlen(str);
-    str = new char [_length+1];
-    for (int i=0;i<_length;i++){
-        _str[i]=str[i];
-    }
-    _str[_length]='/0';
 
+    length_ = strlen(str);
+    str_ = new char[length_ + 1];
+    strcpy(str_, str);
 }
 
 String::String(const String &str) {
-    _length= strlen(str._str);
-    this->_str = new char [_length+1];
-    for (int i=0;i<_length;i++){
-       this->_str[i]=str._str[i];
-    }
-   this-> _str[_length]='/0';
+
+    length_ = str.length_;
+    str_ = new char[length_ + 1];
+    strcpy(str_, str.str_);
 }
 
 
 String::String(String &&str) noexcept {
-    this->_length=str._length;
-    this->_str=str._str;
-    str._length = 0;
-    str._str = nullptr;
+
+        length_ = str.length_;
+        str_ = str.str_;
+        str.str_ = nullptr;
+        str.length_ = 0;
 }
+
 String::~String() {
 
-    delete[] _str;
+    delete[] str_;
 }
 
 char &String::operator[](int index) {
 
-    return _str[index];
+    return str_[index];
 
 }
+
 String String::operator+(const String &str) {
-    String Newstr;
-    int thisLength = strlen(this->_str);
-    int otherLength = strlen(str._str);
-    Newstr._length = thisLength + otherLength;
-    Newstr._str = new char[thisLength + otherLength + 1];
-    int i=0;
-    for (i; i < thisLength; i++)
-    {
-        Newstr._str[i] = this->_str[i];
-    }
 
-    for (int j = 0; j < otherLength; j++,i++)
-    {
-        Newstr._str[i] = str._str[j];
-    }
-
-    Newstr._str[thisLength + otherLength] = '\0';
-    return Newstr;
-
+    String new_str;
+    new_str.length_ = length_ + str.length_;
+    new_str.str_ = new char[new_str.length_ + 1];
+    strcpy(new_str.str_, str_);
+    strcat(new_str.str_, str.str_);
+    return new_str;
 }
 
 void String::append(const char *str) {
-    _length+= strlen(str);
-    char * tmp= new char [_length+1];
-    strcpy(tmp,_str);
-    strcat(tmp,str);
-    delete[] _str;
-    _str = tmp;
-}
-void String::append(const String &str) {
-    _length += str._length;
-    char *tmp = new char[_length + 1];
-    strcpy(tmp, _str);
-    strcat(tmp, str._str);
-    delete[] _str;
-    _str = tmp;
 
+        String new_str(str);
+        append(new_str);
 }
-const char*String::c_str(){
-    return _str;
+
+void String::append(const String &str) {
+
+    String new_str = *this + str;
+    delete[] str_;
+    str_ = new_str.str_;
+    length_ = new_str.length_;
+}
+
+const char *String::c_str() {
+
+    return str_;
 }
 
 

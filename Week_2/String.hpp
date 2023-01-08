@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include<compare>
+
+
 class String {
 
 public:
@@ -20,13 +22,12 @@ public:
 
     ~String();
 
-    [[nodiscard]] inline size_t length() const { return _length; }
+    [[nodiscard]] inline size_t length() const { return length_; }
 
     [[nodiscard]] inline bool empty() const {
-        return _length == 0;
+
+        return length_ == 0;
     }
-
-
 
 
     char &operator[](int index);
@@ -38,20 +39,24 @@ public:
     void append(const char *str);
 
 
-     String operator+(const String& str);
+    String operator+(const String &str);
 
     friend std::ostream &operator<<(std::ostream &os, const String &str) {
 
-        os << str._str;
+        os << str.str_;
         return os;
     };
+
     const char *c_str();
 
+    std::strong_ordering operator<=>(const String &str) const {
+        return strcmp(str_, str.str_) <=> 0;
+    }
 
 
 private:
-    char *_str;
-    size_t _length;
+    char *str_;
+    size_t length_;
 
 };
 
